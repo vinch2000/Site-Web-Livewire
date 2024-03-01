@@ -1,10 +1,13 @@
 <?php
+use App\Livewire\AuthLogin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BiensController;
 
 // Page d'accueil - Connexion
-Route::get('/', [AuthController::class, 'index'])->name('home');
+//Route::get('/', [AuthController::class, 'index'])->name('home');
+Route::get('/', AuthLogin::class)->name('home');
+
 
 /* 
 ** Authentification
