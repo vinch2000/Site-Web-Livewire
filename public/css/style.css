@@ -1,0 +1,11 @@
+.btn svg {
+    width:15px;
+    color:white;
+    fill:white;
+}
+
+.alert {
+    position: fixed!important;
+    bottom: 0px!important;
+    right: 20px!important;
+}
