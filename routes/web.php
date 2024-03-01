@@ -5,9 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BiensController;
 
 // Page d'accueil - Connexion
-//Route::get('/', [AuthController::class, 'index'])->name('home');
-Route::get('/', AuthLogin::class)->name('home');
-
+Route::get('/', [AuthController::class, 'index'])->name('home');
 
 /* 
 ** Authentification
@@ -23,7 +21,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /* 
-** Gestion immobilier
+** Gestion immobilier-
 */
 Route::get('/biens-immobilier', [BiensController::class, 'index'])->name('biens.index');
 

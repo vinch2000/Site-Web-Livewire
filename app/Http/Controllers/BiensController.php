@@ -47,11 +47,11 @@ class BiensController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+       
         $request->validate([
             'sold' => '',
             'lib' => 'required',
-            'description' => 'string',
+            'description' => '',
             'prix' => 'required',
             'photo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'classe_energie' => 'required',
@@ -134,7 +134,7 @@ class BiensController extends Controller
         $request->validate([
             'sold' => '',
             'lib' => 'required',
-            'description' => 'string',
+            'description' => '',
             'prix' => 'required',
             'photo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'classe_energie' => 'required',
