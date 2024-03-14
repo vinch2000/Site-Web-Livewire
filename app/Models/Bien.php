@@ -51,15 +51,12 @@ class Bien extends Model
     {
         return $this->user_id === auth()->id();
     }
-
-    public function getPhotoAttribute($value)
+    
+    // Un nouvel accesseur pour obtenir l'URL complète de l'image
+    public function getPhotoCompleteAttribute()
     {
-        return $value ? asset('images/' . $value) : asset('images/default.jpg');
-    }
-
-    public function getPhotoPathAttribute()
-    {
-        return $this->attributes['photo'] ? $this->attributes['photo'] : 'default.jpg';
+        $value = $this->attributes['photo'];
+        return $value ? asset('storage/images/' . $value) : asset('images/default.jpg');
     }
 
     public function getTypeAnnonceHtmlAttribute()

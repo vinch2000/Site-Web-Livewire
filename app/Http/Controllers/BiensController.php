@@ -10,39 +10,6 @@ use Illuminate\Http\Request;
 class BiensController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        $query = Bien::query();
-    
-        // Filtrer par type de bien (mes biens, tous les biens)
-        if ($request->input('typeBien') === 'self')
-            $query->where("user_id", "=", Auth()->user()->id);
-    
-        // Filtrer par type d'annonce (vente, location)
-        if ($request->has('etat')) {
-            if ($request->input('etat') == 'vente')
-                $query->where("type_annonce_id", "=", 1);
-            elseif ($request->input('etat') == 'location')
-                $query->where("type_annonce_id", "=", 2);
-        }
-    
-        $biens = $query->orderBy('lib')->get();
-    
-        return view('biens.index', compact('biens'));
-    }
-    
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -135,7 +102,7 @@ class BiensController extends Controller
             'sold' => '',
             'lib' => 'required',
             'description' => '',
-            'prix' => 'required',
+            'prix' => ['required', 'regex:/^\d{1,18}(\.\d{1,6})?$/'],
             'photo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'classe_energie' => 'required',
             'chambre' => 'required|integer',
@@ -147,6 +114,7 @@ class BiensController extends Controller
             'type_annonce_id' => 'required',
         ], [
             'lib.required' => 'Le champ libellé est obligatoire',
+            'prix.regex' => 'Le champ prix doit être dans ce format : 5.5',
             'sh.required' => 'Le champ superficie habitable est obligatoire',
             'sh.integer' => 'Le champ superficie habitable doit être un chiffre',
             'st.required' => 'Le champ superficie terrain est obligatoire',
@@ -173,7 +141,7 @@ class BiensController extends Controller
             $bien->photo = $imageName;
         }
     
-        $bien->sold = $request->input('sold');
+        $bien->sold = ($request->input('sold')) ? $request->input('sold') : 0;
         $bien->lib = $request->input('lib');
         $bien->description = $request->input('description');
         $bien->prix = $request->input('prix');

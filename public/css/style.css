@@ -9,3 +9,23 @@
     bottom: 0px!important;
     right: 20px!important;
 }
+
+.loader {
+    position: absolute;
+    right: 22px;
+    top: 8px;
+    border: 4px solid rgb(255 255 255 / 10%);
+    border-radius: 50%;
+    border-top-color: #fff;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 1s ease-in-out infinite;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@-webkit-keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

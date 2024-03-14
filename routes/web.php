@@ -1,33 +1,33 @@
 <?php
-use App\Livewire\AuthLogin;
+
+use App\Livewire\BienListing;
+use App\Livewire\BienCrud;
+use App\Livewire\UserConnection;
+use App\Livewire\UserInscription;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BiensController;
 
-// Page d'accueil - Connexion
+// Cette page home permet de vérifier si l'utilisateur est auth ou pas
+// Et on redirige en fonction vers la connection ou vers la page index immo
 Route::get('/', [AuthController::class, 'index'])->name('home');
 
-/* 
-** Authentification
-*/
-// Vue inscription
-Route::get('/inscription', [AuthController::class, 'inscription'])->name('inscription');
-// Enregistrement
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+// On place les routes de connection et d'inscription dans un middleware Guest
+// qui est fournit par défaut avec Laravel et permet de s'assurer que l'utilisateur n'est pas connecté
+Route::group(['middleware' => ['guest']], function () {
+    Route::get('/connection', UserConnection::class)->name('connection');
+    Route::get('/inscription', UserInscription::class)->name('inscription');
+});
 
-// Connexion
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-// Déconnexion
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// On place ici les routes de l'utilisateur connecté et dont le rôle est celui qu'on a créé pour eux (ici utilisateur)
+// Voir dans database/seeders/PermissionSeeder & RoleSeeder
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['role:utilisateur']], function () {
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-/* 
-** Gestion immobilier-
-*/
-Route::get('/biens-immobilier', [BiensController::class, 'index'])->name('biens.index');
+        Route::get('/biens-immobilier', BienListing::class)->name('biens.index');
 
-Route::get('/biens-immobilier/editer/{id}', [BiensController::class, 'edit'])->defaults('action', 'editer')->name('biens.edit');
-Route::get('/biens-immobilier/ajouter', [BiensController::class, 'edit'])->defaults('action', 'ajouter')->name('biens.ajout');
-Route::get('/biens-immobilier/consulter/{id}', [BiensController::class, 'edit'])->defaults('action', 'consulter')->name('biens.consulter');
-
-Route::post('/biens-immobilier/store', [BiensController::class, 'store'])->name('biens.store');
-Route::put('/biens-immobilier/update/{id}', [BiensController::class, 'update'])->name('biens.update');
+        Route::get('/biens-immobilier/ajouter', BienCrud::class)->defaults('action', 'ajouter')->name('biens.ajout');
+        Route::get('/biens-immobilier/editer/{id}', BienCrud::class)->defaults('action', 'editer')->name('biens.edit');
+        Route::get('/biens-immobilier/consulter/{id}', BienCrud::class)->defaults('action', 'consulter')->name('biens.consulter');
+    });
+});

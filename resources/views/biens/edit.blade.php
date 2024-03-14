@@ -69,7 +69,7 @@
                             <div class="row">
                                 <div class="col-auto">
                                     <label for="inputPrix" class="visually-hidden">Prix €</label>
-                                    <input type="text" style="width:150px" class="form-control @error('prix') is-invalid @enderror" id="inputPrix" name="prix" placeholder="Prix en €" value="{{ old('prix', isset($bien) ? number_format($bien->prix, 2) : '') }}" {{ $disabled }}>
+                                    <input type="text" style="width:150px" class="form-control @error('prix') is-invalid @enderror" id="inputPrix" name="prix" placeholder="Prix en €" value="{{ old('prix', isset($bien) ? number_format($bien->prix, 2, '.', '') : '') }}" {{ $disabled }}>
                                     @error('prix')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -164,12 +164,12 @@
                         <div class="row mt-3">
                             <div class="offset-lg-8 col-lg-4">
                                 <div class="row">
-                                    <div class="col-lg-6 mb-3 mb-lg-0">
+                                    <div class="col-12 col-md-6 mb-3 mb-lg-0">
                                         <button type="submit" class="btn btn-primary w-100">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> Valider
                                         </button>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-12 col-md-6">
                                         @php
                                         $url = route('biens.ajout');
 
