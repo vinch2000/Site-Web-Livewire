@@ -2,8 +2,7 @@
 
 <h2>récup le dépot :</h2>
 
-git clone git@github.com:Zeussprl/lara-immo-classic.git
-
+git clone git@github.com:Zeussprl/lara-immo-livewire.git
 
 <h2>Installe le projet</h2>
 
