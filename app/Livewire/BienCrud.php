@@ -27,16 +27,19 @@ class BienCrud extends Component
 
     public function mount($id = null)
     {
+        // On définit une seule fois le type annonce et de biens
         $this->typeAnnonce = TypeAnnonce::orderBy("type_annonce")->get();
         $this->typeBien = TypeBien::orderBy("type_bien")->get();
 
+        // Si on détecte "consulter" ou "éditer"
         if ($id && $this->action != 'ajouter') {
+            // On va chercher les informations de notre bien et on peuple nos variables livewire
             $bien = Bien::findOrFail($id);
             $this->bienId = $bien->id;
             $this->sold = $bien->sold;
             $this->lib = $bien->lib;
             $this->description = $bien->description;
-            $this->prix = $bien->prix;
+            $this->prix = number_format($bien->prix, 2);
             $this->classe_energie = $bien->classe_energie;
             $this->chambre = $bien->chambre;
             $this->sdb = $bien->sdb;
@@ -52,8 +55,15 @@ class BienCrud extends Component
 
         if($this->action == 'consulter')
         {
+            // Si c'est une consultation de bien, on passe notre variable à true
+            // Et dans la vue, on a une condition sur chaque champ qui les désactive
             $this->disabledForm = true;
         }
+    }
+
+    public function cancel()
+    {
+        $this->redirect(request()->header('Referer'));
     }
 
     public function save()
@@ -75,12 +85,11 @@ class BienCrud extends Component
         ];
 
         // Ajouter les règles de validation spécifiques pour 'ajouter'
-        if ($this->action == 'ajouter') {
+        if ($this->action == 'ajouter')
             $rules['photo'] = ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'];
-        } elseif ($this->action == 'modifier' && !is_string($this->photo)) {
+        elseif ($this->action == 'modifier' && !is_string($this->photo))
             // Pour l'édition, si 'photo' est un fichier téléchargé et non une chaîne
             $rules['photo'] = ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'];
-        }
 
         $this->validate($rules, [
             'lib.required' => 'Le champ libellé est obligatoire',
@@ -99,13 +108,14 @@ class BienCrud extends Component
             'required' => 'Le champ :attribute est obligatoire'
         ]);
 
+        // Si on détecte un ID dans l'url, c'est que c'est une édition, si pas, c'est un ajout
         $bien = $this->bienId ? Bien::findOrFail($this->bienId) : new Bien;
 
+        // Si ce n'est pas une édition ou qu'on détecte une nouvelle photo
         if (!$this->bienId || !is_string($this->photo)) {
             // Si une nouvelle photo a été téléchargée, supprimer l'ancienne photo du dossier
-            if ($bien->photo) {
+            if ($bien->photo)
                 Storage::delete('public/images/' . $bien->photo);
-            }
 
             // Stocker la nouvelle photo et mettre à jour le nom du fichier dans $bien->photo
             $imageName = time() . '.' . $this->photo->extension();

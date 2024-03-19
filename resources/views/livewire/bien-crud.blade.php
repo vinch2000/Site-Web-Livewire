@@ -18,7 +18,7 @@
                         <img src="{{ $photo->temporaryUrl() }}" class="img-fluid rounded">
                     @elseif($action != 'ajouter')
                         <br>
-                        @if(!is_string($photo) && $photo->temporaryUrl())
+                        @if($photo && !is_string($photo) && $photo->temporaryUrl() !== null)
                             <img src="{{ $photo->temporaryUrl() }}" class="img-fluid rounded">
                         @else
                             <img src="{{ $photoComplete }}" class="img-fluid rounded">

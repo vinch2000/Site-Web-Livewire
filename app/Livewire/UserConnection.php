@@ -18,8 +18,10 @@ class UserConnection extends Component
 
     public function login()
     {
+        // Déclenche la vérification
         $this->validate();
 
+        // Récupère les données de l'utilisateur
         $user = User::where('email', $this->email)->first();
 
         // Vérifie si l'utilisateur existe
@@ -34,6 +36,7 @@ class UserConnection extends Component
             return;
         }
 
+        // On réinitialise les variables Session
         session()->regenerate();
         
         return redirect()->route('biens.index');

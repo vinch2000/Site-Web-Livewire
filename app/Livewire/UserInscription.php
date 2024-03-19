@@ -24,7 +24,7 @@ class UserInscription extends Component
     public $loadingVilles = false;
     
     public $pays; // Contiendra tous les pays
-    public $villes = []; // Vide par défaut, peuplé basé sur le pays sélectionné
+    public $villes = []; // Vide par défaut, basé sur le pays sélectionné
 
     protected $rules = [
         'name' => 'required',
@@ -51,6 +51,7 @@ class UserInscription extends Component
         'conditionsgenerale.accepted' => 'Vous devez accepter les conditions générales d\'utilisation pour vous inscrire.'
     ];
     
+    // Méthode construct, on définit une seule fois nos pays
     public function mount()
     {
         $this->pays = Pays::orderBy("nom_pays")->get();
@@ -66,10 +67,14 @@ class UserInscription extends Component
             $this->selectedPays = $value;
     
             // On mets en cache les Villes pendant 60 jours
+            /*
             $cacheKey = "villes_pays_{$value}";
             $this->villes = Cache::remember($cacheKey, 60*60*24*60, function () use ($value) {
                 return Ville::where('pays_id', $value)->orderBy('ville')->get();
             });
+            */
+            // Version simple sans cache
+            $this->villes = Ville::where('pays_id', $value)->orderBy('ville')->get();
         }
     }
 
@@ -91,8 +96,10 @@ class UserInscription extends Component
         $user->syncPermissions($role->permissions);
         $user->save();
     
+        // On le log automatiquement
         Auth::login($user);
     
+        // On le redirige vers la page de listing des biens
         return redirect()->route('biens.index');
     }
 
