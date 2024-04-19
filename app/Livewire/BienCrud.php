@@ -39,7 +39,7 @@ class BienCrud extends Component
             $this->sold = $bien->sold;
             $this->lib = $bien->lib;
             $this->description = $bien->description;
-            $this->prix = str_replace(',', '', number_format($bien->prix, 2));
+            $this->prix = str_replace(',', '.', number_format($bien->prix, 2));
             $this->classe_energie = $bien->classe_energie;
             $this->chambre = $bien->chambre;
             $this->sdb = $bien->sdb;
