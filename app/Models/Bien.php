@@ -56,7 +56,7 @@ class Bien extends Model
     public function getPhotoCompleteAttribute()
     {
         $value = $this->attributes['photo'];
-        return $value ? asset('/images/' . $value) : asset('/images/default.jpg');
+        return $value ? asset('/storage/images/' . $value) : asset('/storage/images/default.jpg');
     }
 
     public function getTypeAnnonceHtmlAttribute()
