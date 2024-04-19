@@ -130,9 +130,9 @@
     
                             <div class="row mb-0">
                                 <div class="col-md-6">
-                                    <button type="button" class="btn btn-secondary w-100" wire:click="cancel">
+                                    <a href="{{ route("home") }}" class="btn btn-secondary w-100">
                                         Annuler
-                                    </button>
+                                    </a>
                                 </div>
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-primary w-100" wire:click="inscription">Inscription</button>
