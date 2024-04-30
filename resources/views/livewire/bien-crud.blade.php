@@ -165,7 +165,7 @@
                                 <a href="{{route('biens.index')}}" class="btn btn-primary">Retour aux biens</a>
                             @else
                                 <button type="submit" class="btn btn-primary">Valider</button>
-                                <button type="button" class="btn btn-secondary" wire:click="cancel">Annuler</button>
+                                <a href="{{ route('biens.index') }}" class="btn btn-secondary">Annuler</a>
                             @endif
                         </div>
                     </div>
